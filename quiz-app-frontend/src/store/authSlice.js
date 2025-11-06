@@ -1,25 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../services/api';
 
-// --- Thunks (Xử lý bất đồng bộ) ---
-
-// Đăng nhập
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ username, password }, { rejectWithValue }) => {
     try {
       const response = await api.post('/users/login', { username, password });
-      // Lấy user data từ token (giả định) hoặc cần 1 API /users/me
-      // Ở đây chúng ta sẽ lưu token và username
+      //  lưu token và username ở đây
       const data = {
         token: response.data.token,
-        username: username, // Lấy username từ input
+        username: username, 
       };
       
-      // Lấy thông tin chi tiết user (để kiểm tra admin)
-      // Cần đăng nhập với quyền admin để gọi /users
-      // Giải pháp tốt hơn: API login nên trả về cả user.admin
-      // Tạm thời: Chúng ta sẽ thử gọi /users, nếu thành công -> admin
+
       try {
         await api.get('/users');
         data.isAdmin = true;
@@ -35,7 +28,6 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Đăng ký
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async ({ username, password }, { rejectWithValue }) => {
@@ -48,7 +40,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// --- Lấy state ban đầu từ localStorage ---
+// --- state ban đầu từ localstorage ---
 const getInitialState = () => {
   const authData = localStorage.getItem('auth');
   if (authData) {
@@ -67,7 +59,7 @@ const getInitialState = () => {
     username: null,
     isAdmin: false,
     isAuthenticated: false,
-    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: null,
   };
 };
@@ -77,7 +69,6 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: getInitialState(),
   reducers: {
-    // Đăng xuất
     logoutUser: (state) => {
       state.token = null;
       state.username = null;
@@ -89,7 +80,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Xử lý Login
       .addCase(loginUser.pending, (state) => {
         state.status = 'loading';
         state.error = null;

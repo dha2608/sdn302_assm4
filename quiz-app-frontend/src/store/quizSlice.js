@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../services/api';
 
-// Lấy tất cả quizzes
 export const fetchQuizzes = createAsyncThunk(
   'quizzes/fetchQuizzes',
   async (_, { rejectWithValue }) => {

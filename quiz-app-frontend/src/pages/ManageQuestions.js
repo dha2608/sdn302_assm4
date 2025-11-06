@@ -6,11 +6,10 @@ function ManageQuestions() {
   const dispatch = useDispatch();
   const { items: questions, status } = useSelector((state) => state.questions);
 
-  // State cho form (tạo mới và chỉnh sửa)
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [text, setText] = useState('');
-  const [options, setOptions] = useState(''); // Dạng chuỗi "A,B,C"
+  const [options, setOptions] = useState('');
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0);
 
   useEffect(() => {
@@ -24,19 +23,16 @@ function ManageQuestions() {
     
     const questionData = {
       text,
-      options: options.split(',').map(opt => opt.trim()), // Chuyển chuỗi thành mảng
+      options: options.split(',').map(opt => opt.trim()),
       correctAnswerIndex: parseInt(correctAnswerIndex)
     };
 
     if (isEditing) {
-      // Cập nhật
       dispatch(updateQuestion({ id: currentId, data: questionData }));
     } else {
-      // Tạo mới
       dispatch(addQuestion(questionData));
     }
     
-    // Reset form
     resetForm();
   };
   
@@ -52,9 +48,9 @@ function ManageQuestions() {
     setIsEditing(true);
     setCurrentId(question._id);
     setText(question.text);
-    setOptions(question.options.join(', ')); // Chuyển mảng thành chuỗi
+    setOptions(question.options.join(', ')); 
     setCorrectAnswerIndex(question.correctAnswerIndex);
-    window.scrollTo(0, 0); // Cuộn lên đầu trang
+    window.scrollTo(0, 0);
   };
 
   const handleDelete = (id) => {
@@ -67,7 +63,6 @@ function ManageQuestions() {
     <div className="container">
       <h2>Manage Questions</h2>
       
-      {/* Form tạo/chỉnh sửa */}
       <div className="card shadow-sm mb-4">
         <div className="card-body">
           <h4 className="card-title">{isEditing ? 'Edit Question' : 'Add New Question'}</h4>
@@ -115,7 +110,6 @@ function ManageQuestions() {
         </div>
       </div>
 
-      {/* Danh sách câu hỏi */}
       <h3>Questions List</h3>
       {status === 'loading' && <p>Loading questions...</p>}
       <div className="list-group">

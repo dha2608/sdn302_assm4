@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../services/api';
 
-// Thunks cho Admin
+// thunks admin
 export const fetchQuestions = createAsyncThunk(
   'questions/fetchQuestions',
   async () => {
@@ -30,7 +30,7 @@ export const deleteQuestion = createAsyncThunk(
   'questions/deleteQuestion',
   async (id) => {
     await api.delete(`/question/${id}`);
-    return id; // Trả về ID để xóa khỏi state
+    return id; // trả về ID để xóa khỏi state
   }
 );
 
@@ -44,7 +44,7 @@ const questionSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch
+
       .addCase(fetchQuestions.pending, (state) => {
         state.status = 'loading';
       })
@@ -56,18 +56,18 @@ const questionSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      // Add
+
       .addCase(addQuestion.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
-      // Update
+
       .addCase(updateQuestion.fulfilled, (state, action) => {
         const index = state.items.findIndex(q => q._id === action.payload._id);
         if (index !== -1) {
           state.items[index] = action.payload;
         }
       })
-      // Delete
+
       .addCase(deleteQuestion.fulfilled, (state, action) => {
         state.items = state.items.filter(q => q._id !== action.payload);
       });

@@ -15,24 +15,23 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-        {/* Routes công khai */}
+        {/* public route */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Routes cho User đã đăng nhập */}
+        {/* user route */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/dashboard/quiz" element={<Quiz />} />
         </Route>
 
-        {/* Routes cho Admin */}
+        {/* admi drroute*/}
         <Route element={<AdminRoute />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/questions" element={<ManageQuestions />} />
         </Route>
         
-        {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

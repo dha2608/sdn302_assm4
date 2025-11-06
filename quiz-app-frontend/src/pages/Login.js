@@ -12,7 +12,6 @@ function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Điều hướng dựa trên vai trò
       navigate(isAdmin ? '/admin' : '/dashboard');
     }
   }, [isAuthenticated, isAdmin, navigate]);

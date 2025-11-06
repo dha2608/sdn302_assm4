@@ -15,13 +15,12 @@ function Register() {
     e.preventDefault();
     setSuccess(false);
     
-    // unwrap() sẽ trả về payload (nếu thành công) hoặc ném lỗi (nếu rejected)
     try {
        await dispatch(registerUser({ username, password })).unwrap();
        setSuccess(true);
-       setTimeout(() => navigate('/login'), 2000); // Chuyển hướng sau 2s
+       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-       // Lỗi đã được xử lý bởi rejectWithValue và state
+       // Lỗi được xử lý bởi rejectWithValue và state
     }
   };
 

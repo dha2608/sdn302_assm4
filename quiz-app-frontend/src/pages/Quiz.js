@@ -6,25 +6,20 @@ function Quiz() {
   const dispatch = useDispatch();
   const { items: quizzes, status } = useSelector((state) => state.quizzes);
   
-  // State để quản lý quiz
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
 
-  // Lấy danh sách quiz khi component mount
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchQuizzes());
     }
   }, [status, dispatch]);
 
-  // Chọn quiz để bắt đầu (ở đây ta lấy quiz đầu tiên)
   useEffect(() => {
     if (quizzes.length > 0 && !currentQuiz) {
-      // Lấy 1 quiz (ví dụ quiz đầu tiên)
-      // Lọc các quiz có câu hỏi
       const quizWithQuestions = quizzes.find(q => q.questions && q.questions.length > 0);
       if (quizWithQuestions) {
         setCurrentQuiz(quizWithQuestions);
@@ -38,24 +33,21 @@ function Quiz() {
   const handleAnswerSubmit = () => {
     const currentQuestion = currentQuiz.questions[currentQuestionIndex];
     
-    // Kiểm tra đáp án
     if (selectedAnswer === currentQuestion.correctAnswerIndex) {
       setScore(score + 1);
     }
     
-    setSelectedAnswer(null); // Reset lựa chọn
+    setSelectedAnswer(null); 
 
-    // Chuyển câu hỏi tiếp theo
     if (currentQuestionIndex < currentQuiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Hoàn thành quiz
       setQuizCompleted(true);
     }
   };
 
   const restartQuiz = () => {
-     setCurrentQuiz(null); // Sẽ trigger useEffect để chọn lại quiz
+     setCurrentQuiz(null); //trigger useEffect để chọn lại quiz
   };
 
   // --- Render ---
